@@ -1,7 +1,7 @@
 {
     "macros": [
         "ARM_UC_USE_PAL_BLOCKDEVICE=1",
-        "MBED_CLOUD_CLIENT_UPDATE_STORAGE=ARM_UCP_FLASHIAP_BLOCKDEVICE"
+        "MBED_CLOUD_CLIENT_UPDATE_STORAGE=ARM_UCP_FLASHIAP_BLOCKDEVICE"        
     ],
     "target_overrides": {
         "*": {
@@ -27,7 +27,7 @@
         "K64F": {
             "target.network-default-interface-type" : "ETHERNET",
             "update-client.bootloader-details"      : "0x00007188",
-            "update-client.application-details"     : "(40*1024)"
+            "update-client.application-details"     : "(108*1024)"
         },
         "K66F": {
             "target.network-default-interface-type" : "ETHERNET",
