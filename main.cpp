@@ -34,6 +34,10 @@ static void main_application(void);
 
 int main(void)
 {
+    #define HINT 0x0000000020000001
+    uint8_t * Hint = (uint8_t *)HINT;
+    //*Hint = 0xAA;
+    printf("Hi Hint 0x%x, pointer %p \r\n",*Hint, Hint);
     mcc_platform_run_program(main_application);
 }
 

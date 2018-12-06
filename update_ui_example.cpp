@@ -44,9 +44,11 @@ void update_authorize(int32_t request)
            This doesn't affect the performance of the Cloud Client.
         */
         case MbedCloudClient::UpdateRequestDownload:
+        {
             printf("Firmware download requested\r\n");
             printf("Authorization granted\r\n");
             _client->update_authorize(MbedCloudClient::UpdateRequestDownload);
+        }
             break;
 
         /* Cloud Client wishes to reboot and apply the new firmware.
@@ -57,9 +59,15 @@ void update_authorize(int32_t request)
            This doesn't affect the performance of the Cloud Client.
         */
         case MbedCloudClient::UpdateRequestInstall:
+        {
+            #define HINT 0x0000000020000001
+            uint8_t * Hint = (uint8_t *)HINT;
+            *Hint = 0xAA;
+            printf("Hint 0x%x, pointer %p \r\n",*Hint, Hint);
             printf("Firmware install requested\r\n");
             printf("Authorization granted\r\n");
             _client->update_authorize(MbedCloudClient::UpdateRequestInstall);
+        }
             break;
 
         default:
