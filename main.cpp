@@ -32,12 +32,72 @@ static Blinky blinky;
 
 static void main_application(void);
 
+typedef struct _attestation_data
+{
+    uint8_t   signerId[32];
+    uint8_t   imageHash[32];
+    uint8_t   imageType;
+    uint8_t   epoch;
+    uint32_t  version;
+    uint32_t  imageStart;
+    uint32_t  imageSize;
+} __attribute__((packed)) attestation_data_t;
+
+extern uint8_t ATTESTATION_SIZE;
+extern uint8_t __Mainboot_selector;
+extern uint8_t __no_load_crc8;
+extern uint8_t __attestation_start__;
+extern uint8_t __no_load_crc8;
+
+static void pretty_print_attestation(attestation_data_t* data)
+{
+    printf("++++++++++++++++++++++++++++++++++++++++\r\n");
+    switch (data->imageType)
+    {
+    case 0:
+    {
+        printf("+ ROM Boot                             +\r\n");
+        break;
+    }
+    case 1:
+        printf("+ OEM Boot                             +\r\n");
+        break;
+    case 2:
+        printf("+ Main Boot                            +\r\n");
+        break;
+    }
+    printf("+ signerId =");
+    for (int i=0; i < sizeof(data->signerId); i++)
+        printf("%02x", data->signerId[i]);
+    printf("             +\r\n");
+    printf("+ hash = ");
+    for (int i=0; i < sizeof(data->imageHash); i++)
+        printf("%02x" ,data->imageHash[i]);
+    printf("             +\r\n");
+    printf("+++++++++++++++++++++++++++++++++++++++++++++++++\r\n");
+    printf("+ epoch    + version    + address    + size     +\r\n");
+    printf("+ %2x       + %8x    + %8x  + %8x +\r\n",data->epoch, data->version, data->imageStart, data->imageSize);
+    printf("+++++++++++++++++++++++++++++++++++++++++++++++++\r\n");
+}
+
+static void print_attestation(void)
+{
+    int i = 0;
+    attestation_data_t *ROM = (attestation_data_t *)(&__attestation_start__ + 1);
+    attestation_data_t *OEM = ROM + 1;
+    attestation_data_t *MAIN = OEM + 1;
+    pretty_print_attestation(ROM);
+    pretty_print_attestation(OEM);
+    pretty_print_attestation(MAIN);
+}
+
 int main(void)
 {
-    #define HINT 0x0000000020000001
-    uint8_t * Hint = (uint8_t *)HINT;
-    //*Hint = 0xAA;
-    printf("Hi Hint 0x%x, pointer %p \r\n",*Hint, Hint);
+    printf("******************************************\r\n");
+    printf("*** __attestation_start__ = %p ***\r\n",&__attestation_start__);
+    printf("*** ATTESTATION_SIZE = %d ***\r\n",&ATTESTATION_SIZE);
+    printf("******************************************\r\n");
+    print_attestation();
     mcc_platform_run_program(main_application);
 }
 
