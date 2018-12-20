@@ -17,6 +17,7 @@
 // ----------------------------------------------------------------------------
 
 #include "update_ui_example.h"
+#include "OEM_functions.h"
 
 #ifdef MBED_CLOUD_CLIENT_SUPPORT_UPDATE
 
@@ -60,10 +61,8 @@ void update_authorize(int32_t request)
         */
         case MbedCloudClient::UpdateRequestInstall:
         {
-            #define HINT 0x0000000020000001
-            uint8_t * Hint = (uint8_t *)HINT;
-            *Hint = 0xAA;
-            printf("Hint 0x%x, pointer %p \r\n",*Hint, Hint);
+            set_application_hint(0xAA);
+//            printf("Hint 0x%x, pointer %p \r\n",*Hint, Hint);
             printf("Firmware install requested\r\n");
             printf("Authorization granted\r\n");
             _client->update_authorize(MbedCloudClient::UpdateRequestInstall);
