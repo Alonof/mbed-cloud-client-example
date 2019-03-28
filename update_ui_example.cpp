@@ -17,8 +17,11 @@
 // ----------------------------------------------------------------------------
 
 #include "update_ui_example.h"
-#include "OEM_functions.h"
-
+//stub function
+static void set_application_hint(int a)
+{
+    return;
+}
 #ifdef MBED_CLOUD_CLIENT_SUPPORT_UPDATE
 
 #include <stdio.h>

@@ -27,7 +27,7 @@
         "K64F": {
             "target.network-default-interface-type" : "ETHERNET",
             "update-client.bootloader-details"      : "0x00007188",
-            "update-client.application-details"     : "(80*1024)"
+            "update-client.application-details"     : "(81*1024)"
         },
         "K66F": {
             "target.network-default-interface-type" : "ETHERNET",
